@@ -22,6 +22,10 @@ class Question(models.Model):
     def was_published_recently(self):
         return self.published_at >= (timezone.now() - datetime.timedelta(days=1)).timestamp()  #
 
+    class Meta:
+        verbose_name = 'Вопрос'
+        verbose_name_plural = 'Вопросы'
+
 
 class Choice(models.Model):
     # переменная класса = поле базы данных в модели
@@ -38,10 +42,14 @@ class Choice(models.Model):
     votes = models.PositiveIntegerField(
         verbose_name="Подсчитанные голоса"
     )
-
     # каждое поле представлено экземпляром класса Field
 
     def __str__(self):
         return self.text
+
+    class Meta:
+        verbose_name = 'Ответ'
+        verbose_name_plural = 'Ответы'
 # Миграции - это то, как Django хранит изменения в ваших моделях (и, следовательно, в вашей схеме базы данных) - это
 # файлы на диске.
+

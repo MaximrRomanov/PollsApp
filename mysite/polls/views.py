@@ -1,5 +1,5 @@
-from django.http import HttpResponse
-from django.shortcuts import render
+from django.http import HttpResponse, Http404
+from django.shortcuts import render, get_object_or_404
 from django.template import loader
 
 from .models import Question
@@ -18,8 +18,24 @@ def index(request):
     # Она возвращает объект HttpResponse данного шаблона, отображенный в данном контексте
 
 
+# def details(request, question_id):
+#     try:
+#         question = Question.objects.get(pk=question_id)
+#     except Question.DoesNotExist:
+#         raise Http404('Question does not exist')
+#     return render(request, 'polls/details.html', {'question': question})
+# Новая концепция:
+# представление вызывает исключение Http404,
+# если вопрос с запрошенным идентификатором не существует.
+
+
 def details(request, question_id):
-    return HttpResponse("You're looking at question %s." % question_id)
+    question = get_object_or_404(Question, pk=question_id)
+    return render(request, 'polls/details.html', {'question': question})
+    # Функция get_object_or_404() принимает модель Django в качестве первого аргумента
+    # и произвольное количество ключевых аргументов, которое она передает в Http404(),
+    # если объект не существует. Также есть функция get_list_or_404(),
+    # которая работает так же, как get_object_or_404() - за исключением использования filter()
 
 
 def results(request, question_id):
